@@ -1,2 +1,2 @@
 # UR_hololens2_Unity
-This is a Unity project where the Hololens 2 are used to move a UR robot. Thanks for Roman Parak, for his inspiration in this project. Without him, this would have been much more difficult. 
+This Unity project involves using the HoloLens 2 to control a UR robot. Special thanks to Roman Parak for his project on GitHub, which provided invaluable assistance and inspiration, making this endeavor much more achievable.
