@@ -1,4 +1,9 @@
 # UR_hololens2_Unity
+
+<p align="center">
+<img src="https://github.com/ajorcajo/UR_Hololens2_Unity/blob/main/images/InAction.png" width="800" height="500">
+</p>
+
 In this collaborative scholarship, an application has been developed to innovate the teaching of robotics through virtual reality, specifically using the Microsoft HoloLens 2 device. This application, created with the Unity development tool along with the Microsoft Mixed Reality Toolkit, will teach students the different types of movements (MoveJ, MoveL, MoveP) available for a Universal Robots UR3e robot.
 
 Moreover, with mixed reality, users will be able to see the exact path traced by the robot, creating an immersive environment and unique experiences for the user, thus greatly enhancing information retention and learning. This statement has been demonstrated through my following final degree project:
