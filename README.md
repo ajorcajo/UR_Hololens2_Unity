@@ -19,5 +19,5 @@ This Unity project involves using the HoloLens 2 to control a UR robot. I would 
 </p>
 
 <p align="center">
-<img src="https://github.com/ajorcajo/UR_Hololens2_Unity/blob/main/images/JoystickDiagnostic.png" width="800" height="500">
+<img src="https://github.com/ajorcajo/UR_Hololens2_Unity/blob/main/images/JoystickDiagnostic.png" width="1000" height="400">
 </p>
