@@ -13,3 +13,11 @@ Moreover, with mixed reality, users will be able to see the exact path traced by
 In addition to innovation in teaching, there is also the capability to control the robot in mixed reality, an innovative project that can serve as a foundation for future projects. This also enhances the learning of both students and users worldwide in the field of communication via sockets, between a UR robot and Mixed Reality or Unity.
 
 This Unity project involves using the HoloLens 2 to control a UR robot. I would like to express my gratitude to [Roman Parak’s project](https://github.com/rparak/Unity3D_Robotics_UR/), which provided invaluable assistance and inspiration, making this endeavor much more achievable.hich has been instrumental in my learning about socket connections.
+
+<p align="center">
+<img src="https://github.com/ajorcajo/UR_Hololens2_Unity/blob/main/images/ConnectionPanel.png" width="800" height="500">
+</p>
+
+<p align="center">
+<img src="https://github.com/ajorcajo/UR_Hololens2_Unity/blob/main/images/JoystickDiagnostic.png" width="800" height="500">
+</p>
