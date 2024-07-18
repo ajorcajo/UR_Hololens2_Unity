@@ -22,7 +22,7 @@ public class PointsManagement : MonoBehaviour
     public Quaternion newRotation = new Quaternion();
     public Vector3 eulerDegrees = new Vector3();
     public Vector3 eulerRadians = new Vector3();
-    public static Vector3 offsetpos = new Vector3();
+    public Vector3 offsetpos = new Vector3();
     private static bool completed = false;
 
     //Pruebas
@@ -33,6 +33,7 @@ public class PointsManagement : MonoBehaviour
     public GameObject PanelProgramation;
     public GameObject Origin;
     public GameObject Origin_BaseRef;
+    public GameObject Rastro;
     public Transform PointsParent;
     // -------------------- UTF8Encoding -------------------- //
     private UTF8Encoding utf8 = new UTF8Encoding();
@@ -52,7 +53,6 @@ public class PointsManagement : MonoBehaviour
     public Transform MoveL_Point_Pos;
     public Transform MoveJ_Point_Pos;
     public Transform MoveP_Point_Pos;
-    public Transform Origin_Pos;
     public Transform tcp;
 
     // Contadores
@@ -128,7 +128,7 @@ public class PointsManagement : MonoBehaviour
         }
         else
         {
-            if (cont_points < 2)
+            if (cont_points < 15)
             {
                 Vector3 newPosition = Points[cont_points - 1].PointObject.transform.position + new Vector3(0.2f, 0, -0.2f);
                 GameObject newObject = Instantiate(MoveL_Point, newPosition, Points[cont_points - 1].PointObject.transform.rotation);
@@ -153,7 +153,7 @@ public class PointsManagement : MonoBehaviour
         }
         else
         {
-            if (cont_points < 2)
+            if (cont_points < 15)
             {
                 Vector3 newPosition = Points[cont_points - 1].PointObject.transform.position + new Vector3(0.2f, 0, -0.2f);
                 GameObject newObject = Instantiate(MoveJ_Point, newPosition, Points[cont_points - 1].PointObject.transform.rotation);
@@ -177,7 +177,7 @@ public class PointsManagement : MonoBehaviour
         }
         else
         {
-            if (cont_points < 2)
+            if (cont_points < 15)
             {
                 Vector3 newPosition = Points[cont_points - 1].PointObject.transform.position + new Vector3(0.2f, 0, -0.2f);
                 GameObject newObject = Instantiate(MoveP_Point, newPosition, Points[cont_points - 1].PointObject.transform.rotation);
@@ -198,7 +198,7 @@ public class PointsManagement : MonoBehaviour
         {
             aviso_type = 2;
         }
-        else { if (cont_points < 2)
+        else { if (cont_points < 15)
             {
                 Vector3 newPosition = Points[cont_points - 1].PointObject.transform.position;
                 GameObject newObject = Instantiate(Gripper_Point, newPosition, Points[cont_points - 1].PointObject.transform.rotation);
@@ -327,6 +327,9 @@ public class PointsManagement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        offsetpos.x = Math.Abs(targetpos.x - (float)ur_data_processing.UR_Stream_Data.C_Position[0]);
+        offsetpos.y = Math.Abs(targetpos.y - (float)ur_data_processing.UR_Stream_Data.C_Position[1]);
+        offsetpos.z = Math.Abs(targetpos.z - (float)ur_data_processing.UR_Stream_Data.C_Position[2]);
         /*
         //Pruebas
         // Aplicar la nueva rotación al objeto
@@ -350,7 +353,6 @@ public class PointsManagement : MonoBehaviour
         real_rot_Radian.z = (float)(ur_data_processing.UR_Stream_Data.C_Orientation[2] );
         //FIN PRuebas
         */
-
 
         esferaPequeña = Points[cont_points - 1].PointObject;
         // Obtén los radios de las esferas
@@ -403,24 +405,46 @@ public class PointsManagement : MonoBehaviour
         {
             UpdateConnections();
         }
-        /*
+        
         if (bandera_sendcommand) {
-
-            RobotController controller = new RobotController(UIPanel_Control.global_ip_address, ur_data_processing.UR_Control_Data.port_number);
 
             if (offsetpos.x < 0.001 && offsetpos.y < 0.001 && offsetpos.z < 0.001)
             {
                 cont++;
+
+                // YOU NEED TO MAKE SURE THE BASE AXES REFERENCES OF THE ROBOT ARE THE SAME AS UNITY, FOR YOUR SECURITY
+                RobotController controller = new RobotController(UIPanel_Control.global_ip_address, ur_data_processing.UR_Control_Data.port_number);
+
+                targetpos.x = Points[cont].PointObject.transform.localPosition.x;
+                targetpos.y = Points[cont].PointObject.transform.localPosition.y;
+                targetpos.z = -Points[cont].PointObject.transform.localPosition.z;
+
+                // Conversion of rotation axes
+                // Aplicar la nueva rotación al objeto
+                rot.x = (float)ur_data_processing.UR_Stream_Data.C_Orientation[0];
+                rot.y = (float)ur_data_processing.UR_Stream_Data.C_Orientation[1];
+                rot.z = (float)ur_data_processing.UR_Stream_Data.C_Orientation[2];
+
+
+
+                coordinates[0] = targetpos.x.ToString("F4", CultureInfo.InvariantCulture);
+                coordinates[1] = targetpos.y.ToString("F4", CultureInfo.InvariantCulture);
+                coordinates[2] = targetpos.z.ToString("F4", CultureInfo.InvariantCulture);
+                coordinates[3] = rot.x.ToString("F4", CultureInfo.InvariantCulture);
+                coordinates[4] = rot.y.ToString("F4", CultureInfo.InvariantCulture);
+                coordinates[5] = rot.z.ToString("F4", CultureInfo.InvariantCulture);
+
+
                 switch (Points[cont].type)
                 {
                     case 0: //MoveL
-                        controller.SendCommandAsync("movel(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.01, t=1, r=0)" + "\n");
+                        controller.SendCommandAsync("movel(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.005, t=1, r=0)" + "\n");
                         break;
                     case 1: //MoveJ
-                        controller.SendCommandAsync("movej(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.01, t=1, r=0)" + "\n");
+                        controller.SendCommandAsync("movej(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.005, t=1, r=0)" + "\n");
                         break;
                     case 2: //MoveP
-                        controller.SendCommandAsync("movep(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.01, r=0)" + "\n");
+                        controller.SendCommandAsync("movep(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.005, r=0)" + "\n");
                         break;
                     case 3: //Gripper
                         gripper_state = !gripper_state;
@@ -436,39 +460,16 @@ public class PointsManagement : MonoBehaviour
                     cont = 1;
             }
 
-            targetpos.x = Points[cont].PointObject.transform.localPosition.x;
-            targetpos.y = Points[cont].PointObject.transform.localPosition.y;
-            targetpos.z = -Points[cont].PointObject.transform.localPosition.z;
-
-            // Conversion of rotation axes
-            rot.x = Origin_BaseRef.transform.rotation.x - 90.0f;
-            rot.y = -Origin_BaseRef.transform.rotation.y;
-            rot.z = Origin_BaseRef.transform.rotation.z;
-
-
-            coordinates[0] = targetpos.x.ToString("F4", CultureInfo.InvariantCulture);
-            coordinates[1] = targetpos.y.ToString("F4", CultureInfo.InvariantCulture);
-            coordinates[2] = targetpos.z.ToString("F4", CultureInfo.InvariantCulture);
-            coordinates[3] = rot.x.ToString("F4", CultureInfo.InvariantCulture);
-            coordinates[4] = rot.y.ToString("F4", CultureInfo.InvariantCulture);
-            coordinates[5] = rot.z.ToString("F4", CultureInfo.InvariantCulture);
-
-
-            
-
-            // Comprobacion de cuando se llega a un punto
-            offsetpos.x = Math.Abs(targetpos.x - (float)ur_data_processing.UR_Stream_Data.C_Position[0]);
-            offsetpos.y = Math.Abs(targetpos.y - (float)ur_data_processing.UR_Stream_Data.C_Position[1]);
-            offsetpos.z = Math.Abs(targetpos.z - (float)ur_data_processing.UR_Stream_Data.C_Position[2]);
             /*
             if (offsetpos.x < 0.001 && offsetpos.y < 0.001 && offsetpos.z < 0.001)
             {
                 completed = true;
                 // Block the code until the robot makes the movement
             }
-            
+            */
         }
-        */
+    
+
     }
 
     public void UpdateConnections()
@@ -548,123 +549,47 @@ public class PointsManagement : MonoBehaviour
         // YOU NEED TO MAKE SURE THE BASE AXES REFERENCES OF THE ROBOT ARE THE SAME AS UNITY, FOR YOUR SECURITY
         RobotController controller = new RobotController(UIPanel_Control.global_ip_address, ur_data_processing.UR_Control_Data.port_number);
 
-        bandera_sendcommand = true;
-        /*
+        targetpos.x = Points[1].PointObject.transform.localPosition.x;
+        targetpos.y = Points[1].PointObject.transform.localPosition.y;
+        targetpos.z = -Points[1].PointObject.transform.localPosition.z;
+
+        // Conversion of rotation axes
+        // Aplicar la nueva rotación al objeto
+        rot.x = (float)ur_data_processing.UR_Stream_Data.C_Orientation[0];
+        rot.y = (float)ur_data_processing.UR_Stream_Data.C_Orientation[1];
+        rot.z = (float)ur_data_processing.UR_Stream_Data.C_Orientation[2];
+
+
+
+        coordinates[0] = targetpos.x.ToString("F4", CultureInfo.InvariantCulture);
+        coordinates[1] = targetpos.y.ToString("F4", CultureInfo.InvariantCulture);
+        coordinates[2] = targetpos.z.ToString("F4", CultureInfo.InvariantCulture);
+        coordinates[3] = rot.x.ToString("F4", CultureInfo.InvariantCulture);
+        coordinates[4] = rot.y.ToString("F4", CultureInfo.InvariantCulture);
+        coordinates[5] = rot.z.ToString("F4", CultureInfo.InvariantCulture);
+
+        offsetpos.x = Math.Abs(targetpos.x - (float)ur_data_processing.UR_Stream_Data.C_Position[0]);
+        offsetpos.y = Math.Abs(targetpos.y - (float)ur_data_processing.UR_Stream_Data.C_Position[1]);
+        offsetpos.z = Math.Abs(targetpos.z - (float)ur_data_processing.UR_Stream_Data.C_Position[2]);
+
         switch (Points[1].type)
         {
             case 0: //MoveL
-                controller.SendCommandAsync("movel(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.01, t=1, r=0)" + "\n");
+                controller.SendCommandAsync("movel(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.005, t=1, r=0)" + "\n");
                 break;
             case 1: //MoveJ
-                controller.SendCommandAsync("movej(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.01, t=1, r=0)" + "\n");
+                controller.SendCommandAsync("movej(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.005, t=1, r=0)" + "\n");
                 break;
             case 2: //MoveP
-                controller.SendCommandAsync("movep(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.01, r=0)" + "\n");
+                controller.SendCommandAsync("movep(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.005, r=0)" + "\n");
                 break;
             case 3: //Gripper
                 gripper_state = !gripper_state;
                 controller.SetDigitalOutputsAsync(gripper_state);
                 break;
         }
-        */
-        
-        if (bandera_sendcommand && cont_points > 0 && isInside)
-        {
-            for (int j = 1; j < Points.Length; j++)
-            {
-                targetpos.x = Points[j].PointObject.transform.localPosition.x;
-                targetpos.y = Points[j].PointObject.transform.localPosition.y;
-                targetpos.z = -Points[j].PointObject.transform.localPosition.z;
 
-                //Pruebas
-                /*
-                // Rotación original
-                Quaternion originalRotation = Origin_BaseRef.transform.localRotation; // Ejemplo de rotación en Euler angles
-
-                // Rotación de 180 grados alrededor del eje Z
-                Quaternion inversionZ = Quaternion.Euler(0, 0, 180);
-
-                // Nueva rotación con el eje Z invertido
-                newRotation = originalRotation * inversionZ;
-
-                // Convertir el quaternion a ángulos de Euler en grados
-                eulerDegrees = newRotation.eulerAngles;
-
-                // Convertir los ángulos de Euler de grados a radianes
-                eulerRadians = eulerDegrees * Mathf.Deg2Rad;
-                //FIN pruebas
-                */
-                // Aplicar la nueva rotación al objeto
-                rot.x = (float)ur_data_processing.UR_Stream_Data.C_Orientation[0];
-                rot.y = (float)ur_data_processing.UR_Stream_Data.C_Orientation[1];
-                rot.z = (float)ur_data_processing.UR_Stream_Data.C_Orientation[2];
-
-                coordinates[0] = targetpos.x.ToString("F4", CultureInfo.InvariantCulture);
-                coordinates[1] = targetpos.y.ToString("F4", CultureInfo.InvariantCulture);
-                coordinates[2] = targetpos.z.ToString("F4", CultureInfo.InvariantCulture);
-                coordinates[3] = rot.x.ToString("F4", CultureInfo.InvariantCulture);
-                coordinates[4] = rot.y.ToString("F4", CultureInfo.InvariantCulture);
-                coordinates[5] = rot.z.ToString("F4", CultureInfo.InvariantCulture);
-
-                switch (Points[j].type)
-                {
-                    case 0: //MoveL
-                        controller.SendCommandAsync("movel(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.01, t=1, r=0)" + "\n");
-                        break;
-                    case 1: //MoveJ
-                        controller.SendCommandAsync("movej(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.01, t=1, r=0)" + "\n");
-                        break;
-                    case 2: //MoveP
-                        controller.SendCommandAsync("movep(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.01, r=0)" + "\n");
-                        break;
-                    case 3: //Gripper
-                        gripper_state = !gripper_state;
-                        controller.SetDigitalOutputsAsync(gripper_state);
-                        /*                      
-
-                                                gripper_state = !gripper_state;
-                                                string comando_str;
-                                                // Enviar primer comando
-                                                comando_str = "set_tool_digital_out(0, " + (gripper_state ? "True" : "False") + ")\n ";
-                                                byte[] comando;
-                                                comando = utf8.GetBytes(comando_str);
-
-                                                network_stream.Write(comando, 0, comando.Length);
-                                                //Thread.Sleep(100);
-                                                // ur_data_processing.UR_Control_Data.aux_command_str = "set_tool_digital_out(1, " + (gripper_state ? "True" : "False") + ")\n";
-                        */
-                        break;
-                }
-                UnityEngine.Debug.Log("Wait...");
-                /*
-                cont_timer = 0;
-                while (cont_timer < 50)
-                {
-
-                }
-                
-                while (completed == false)
-                {
-                    // Block the code until the robot makes the movement
-                }
-                */
-                UnityEngine.Debug.Log("Completed, going to next point");
-
-                offsetpos.x = Math.Abs(targetpos.x - (float)ur_data_processing.UR_Stream_Data.C_Position[0]);
-                offsetpos.y = Math.Abs(targetpos.y - (float)ur_data_processing.UR_Stream_Data.C_Position[1]);
-                offsetpos.z = Math.Abs(targetpos.z - (float)ur_data_processing.UR_Stream_Data.C_Position[2]);
-
-            }
-        }
-        else
-        {
-                    UnityEngine.Debug.Log("There are no points!");
-                    aviso_type = 3;
-        }
-
-                UnityEngine.Debug.Log("Finished!");
-                bandera_sendcommand = false;
-        
+        bandera_sendcommand = true;
     }
 
     public class RobotController

@@ -17701,7 +17701,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1072200076}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.428, z: 0}
+  m_LocalPosition: {x: 0.295, y: 1.997, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -25620,7 +25620,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1525466907319635909, guid: 5ff74c0794f3cf740960adffab7281d4, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2390663718217900346, guid: 5ff74c0794f3cf740960adffab7281d4, type: 3}
       propertyPath: m_Enabled
@@ -28300,6 +28300,7 @@ MonoBehaviour:
   newRotation: {x: 0, y: 0, z: 0, w: 0}
   eulerDegrees: {x: 0, y: 0, z: 0}
   eulerRadians: {x: 0, y: 0, z: 0}
+  offsetpos: {x: 0, y: 0, z: 0}
   real_rot_Degree: {x: 0, y: 0, z: 0}
   real_rot_Radian: {x: 0, y: 0, z: 0}
   PanelProgramation: {fileID: 1072200076}
@@ -28317,7 +28318,6 @@ MonoBehaviour:
   MoveL_Point_Pos: {fileID: 2089742266}
   MoveJ_Point_Pos: {fileID: 253732235}
   MoveP_Point_Pos: {fileID: 1360605011}
-  Origin_Pos: {fileID: 1868521096}
   tcp: {fileID: 448395628}
   cont_points: 0
   cont_timer: 0
@@ -28350,7 +28350,9 @@ MonoBehaviour:
   origin: {fileID: 1679511057}
   sphere: {fileID: 5338070}
   PanelOrigin: {fileID: 1787627631}
-  robot: {fileID: 1468337348}
+  robot: {fileID: 3451617560046463823}
+  robot_pos: {fileID: 899739345621590800}
+  OriginRef: {fileID: 1868521096}
 --- !u!1001 &1877627274
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29090,7 +29092,7 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  hostTransform: {fileID: 624241315}
+  hostTransform: {fileID: 1755164212}
   allowedManipulations: 7
   allowedInteractionTypes: -2147483641
   rigidbodyMovementType: 0
@@ -31977,6 +31979,8 @@ MonoBehaviour:
   sphere: {fileID: 1225160013}
   PanelOrigin: {fileID: 1787627631}
   robot: {fileID: 1468337348}
+  robot_pos: {fileID: 0}
+  OriginRef: {fileID: 0}
 --- !u!114 &2087833163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32000,6 +32004,7 @@ MonoBehaviour:
   newRotation: {x: 0, y: 0, z: 0, w: 0}
   eulerDegrees: {x: 0, y: 0, z: 0}
   eulerRadians: {x: 0, y: 0, z: 0}
+  offsetpos: {x: 0, y: 0, z: 0}
   real_rot_Degree: {x: 0, y: 0, z: 0}
   real_rot_Radian: {x: 0, y: 0, z: 0}
   PanelProgramation: {fileID: 1072200076}
@@ -32017,7 +32022,6 @@ MonoBehaviour:
   MoveL_Point_Pos: {fileID: 698811774}
   MoveJ_Point_Pos: {fileID: 527281797}
   MoveP_Point_Pos: {fileID: 461439196}
-  Origin_Pos: {fileID: 2087833161}
   tcp: {fileID: 1573625944}
   cont_points: 0
   cont_timer: 0
