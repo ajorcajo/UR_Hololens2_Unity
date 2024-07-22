@@ -30,3 +30,10 @@ There are different useful panels that can help students to understand concepts 
 <p align="center">
 <img src="https://github.com/ajorcajo/UR_Hololens2_Unity/blob/main/images/ConnectionPanel.png" width="800" height="500">
 </p>
+
+
+
+## Contact
+
+Álvaro Javier Orcajo Domingo
+alvarojavierorcajodomingo@gmail.com
