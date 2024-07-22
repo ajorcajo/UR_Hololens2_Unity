@@ -42,3 +42,16 @@ There are different useful panels that can help students to understand concepts 
 Álvaro Javier Orcajo Domingo
 
 alvarojavierorcajodomingo@gmail.com
+
+## Citation (BibTex)
+
+```bash
+@misc{AlvaroOrcajo_UR_Hololens2_Unity,
+  author = {Álvaro Javier Orcajo Domingo},
+  title = {Virtual/Mixed Reality as a Teaching Tool in the Field of Automation},
+  year = {2024},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/ajorcajo/UR_Hololens2_Unity}}
+}
+```
