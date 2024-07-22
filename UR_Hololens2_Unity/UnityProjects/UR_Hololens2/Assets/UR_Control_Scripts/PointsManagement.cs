@@ -80,6 +80,8 @@ public class PointsManagement : MonoBehaviour
 
     public bool bandera_sendcommand;
     public bool gripper_state;
+    public static bool gripper_action;
+    public bool gripper_bandera;
 
     //Avisos
     public TextMeshProUGUI aviso;
@@ -102,8 +104,9 @@ public class PointsManagement : MonoBehaviour
         AddToArray(Origin,0);
         inicio();
         bandera_sendcommand = false;
-        gripper_state = false;
+        gripper_state = true;
         completed = false;
+        gripper_action = false;
     }
 
     void inicio()
@@ -330,6 +333,10 @@ public class PointsManagement : MonoBehaviour
         offsetpos.x = Math.Abs(targetpos.x - (float)ur_data_processing.UR_Stream_Data.C_Position[0]);
         offsetpos.y = Math.Abs(targetpos.y - (float)ur_data_processing.UR_Stream_Data.C_Position[1]);
         offsetpos.z = Math.Abs(targetpos.z - (float)ur_data_processing.UR_Stream_Data.C_Position[2]);
+
+
+        gripper_bandera = gripper_action;
+
         /*
         //Pruebas
         // Aplicar la nueva rotación al objeto
@@ -353,8 +360,10 @@ public class PointsManagement : MonoBehaviour
         real_rot_Radian.z = (float)(ur_data_processing.UR_Stream_Data.C_Orientation[2] );
         //FIN PRuebas
         */
-
-        esferaPequeña = Points[cont_points - 1].PointObject;
+        if(Points[cont_points - 1].type != 3)
+        {
+            esferaPequeña = Points[cont_points - 1].PointObject;
+        }
         // Obtén los radios de las esferas
         radioGrande = esferaGrande.transform.localScale.x / 2.0f;
         radioPequeña = esferaPequeña.transform.localScale.x / 2.0f;
@@ -408,16 +417,26 @@ public class PointsManagement : MonoBehaviour
         
         if (bandera_sendcommand) {
 
-            if (offsetpos.x < 0.001 && offsetpos.y < 0.001 && offsetpos.z < 0.001)
+            if (offsetpos.x < 0.001 && offsetpos.y < 0.001 && offsetpos.z < 0.001 && gripper_action == false)
             {
                 cont++;
 
                 // YOU NEED TO MAKE SURE THE BASE AXES REFERENCES OF THE ROBOT ARE THE SAME AS UNITY, FOR YOUR SECURITY
                 RobotController controller = new RobotController(UIPanel_Control.global_ip_address, ur_data_processing.UR_Control_Data.port_number);
 
-                targetpos.x = Points[cont].PointObject.transform.localPosition.x;
-                targetpos.y = Points[cont].PointObject.transform.localPosition.y;
-                targetpos.z = -Points[cont].PointObject.transform.localPosition.z;
+                if (Points[cont].type == 3)
+                {
+                    targetpos.x = Points[cont - 1].PointObject.transform.localPosition.x;
+                    targetpos.y = Points[cont - 1].PointObject.transform.localPosition.y;
+                    targetpos.z = -Points[cont - 1].PointObject.transform.localPosition.z;
+                }
+                else
+                {
+                    targetpos.x = Points[cont].PointObject.transform.localPosition.x;
+                    targetpos.y = Points[cont].PointObject.transform.localPosition.y;
+                    targetpos.z = -Points[cont].PointObject.transform.localPosition.z;
+                }
+               
 
                 // Conversion of rotation axes
                 // Aplicar la nueva rotación al objeto
@@ -438,17 +457,18 @@ public class PointsManagement : MonoBehaviour
                 switch (Points[cont].type)
                 {
                     case 0: //MoveL
-                        controller.SendCommandAsync("movel(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.005, t=1, r=0)" + "\n");
+                        controller.SendCommandAsync("movel(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.05, t=0, r=0)" + "\n");
                         break;
                     case 1: //MoveJ
-                        controller.SendCommandAsync("movej(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.005, t=1, r=0)" + "\n");
+                        controller.SendCommandAsync("movej(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.05, t=0, r=0)" + "\n");
                         break;
                     case 2: //MoveP
-                        controller.SendCommandAsync("movep(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.005, r=0)" + "\n");
+                        controller.SendCommandAsync("movep(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.05, r=0)" + "\n");
                         break;
                     case 3: //Gripper
                         gripper_state = !gripper_state;
                         controller.SetDigitalOutputsAsync(gripper_state);
+                        gripper_action = true;
                         break;
                 }
             }
@@ -575,13 +595,13 @@ public class PointsManagement : MonoBehaviour
         switch (Points[1].type)
         {
             case 0: //MoveL
-                controller.SendCommandAsync("movel(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.005, t=1, r=0)" + "\n");
+                controller.SendCommandAsync("movel(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.05, t=0, r=0)" + "\n");
                 break;
             case 1: //MoveJ
-                controller.SendCommandAsync("movej(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.005, t=1, r=0)" + "\n");
+                controller.SendCommandAsync("movej(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.05, t=0, r=0)" + "\n");
                 break;
             case 2: //MoveP
-                controller.SendCommandAsync("movep(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.005, r=0)" + "\n");
+                controller.SendCommandAsync("movep(p[" + coordinates[0] + "," + coordinates[1] + "," + coordinates[2] + "," + coordinates[3] + "," + coordinates[4] + "," + coordinates[5] + "], a = 0.5, v=0.05, r=0)" + "\n");
                 break;
             case 3: //Gripper
                 gripper_state = !gripper_state;
@@ -633,11 +653,11 @@ public class PointsManagement : MonoBehaviour
             await Task.Delay(500); // Pausa de medio segundo
             command = $"set_tool_digital_out({(gripperState ? "0" : "1")}, True)\n";
             await SendCommandAsync(command);
+            await Task.Delay(1500);
+            PointsManagement.gripper_action = false;
 
         }
-
     }
-
 
 }
 

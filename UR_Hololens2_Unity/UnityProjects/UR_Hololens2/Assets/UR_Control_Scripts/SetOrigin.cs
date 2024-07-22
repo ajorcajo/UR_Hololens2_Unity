@@ -32,12 +32,12 @@ public class SetOrigin : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {  
         if(show == false)
         {
-            origin.SetActive(true);
+            origin.SetActive(false);
             PanelOrigin.SetActive(false);
-            sphere.SetActive(true);
+            sphere.SetActive(false);
         }
         else
         {
@@ -45,5 +45,16 @@ public class SetOrigin : MonoBehaviour
             PanelOrigin.SetActive(true);
             sphere.SetActive(true);
         }
+    }
+
+    public void RotatePos()
+    {
+        // Rotate the object 5 degrees around the y-axis
+        robot.transform.Rotate(0, 5, 0);
+    }
+    public void RotateNeg()
+    {
+        // Rotate the object 5 degrees around the y-axis
+        robot.transform.Rotate(0, -5, 0);
     }
 }
