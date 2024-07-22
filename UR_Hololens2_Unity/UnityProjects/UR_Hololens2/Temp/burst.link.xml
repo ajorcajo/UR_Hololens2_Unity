@@ -1,0 +1,10 @@
+<linker>
+ <assembly fullname="UnityEngine.CoreModule">
+  <type fullname="Unity.Jobs.LowLevel.Unsafe.JobsUtility">
+   <method name="GetWorkStealingRange"/>
+  </type>
+  <type fullname="UnityEngine.Quaternion">
+   <method name="Inverse_Injected"/>
+  </type>
+ </assembly>
+</linker>
