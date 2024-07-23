@@ -25,10 +25,10 @@ This Unity project involves using the HoloLens 2 to control a UR robot. I would 
 There are different useful panels that can help students to understand concepts of UR movement such as movel, moveJ... In this app, you can use it in different ways: you can program the robot by using points through mixed reality or program the robot with the teach pendant, run it, and then view the path it has taken using the "trail renderer" in Unity. This can be done as long as the "Robot Programming" panel is executed.
 
 <p align="center">
-<img src="https://github.com/ajorcajo/UR_Hololens2_Unity/blob/main/images/Anclado.png" width="800" height="500">
+<img src="https://github.com/ajorcajo/UR_Hololens2_Unity/blob/main/images/Anclado.png" width="600" height="350">
 </p>
 <p align="center">
-<img src="https://github.com/ajorcajo/UR_Hololens2_Unity/blob/main/images/Anclado2.png" width="800" height="500">
+<img src="https://github.com/ajorcajo/UR_Hololens2_Unity/blob/main/images/Anclado2.png" width="600" height="350">
 </p>
 <p align="center">
 <img src="https://github.com/ajorcajo/UR_Hololens2_Unity/blob/main/images/ALEJADO.png" width="800" height="500">
