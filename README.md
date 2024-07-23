@@ -28,6 +28,9 @@ There are different useful panels that can help students to understand concepts 
 <img src="https://github.com/ajorcajo/UR_Hololens2_Unity/blob/main/images/Anclado.png" width="800" height="500">
 </p>
 <p align="center">
+<img src="https://github.com/ajorcajo/UR_Hololens2_Unity/blob/main/images/Anclado2.png" width="800" height="500">
+</p>
+<p align="center">
 <img src="https://github.com/ajorcajo/UR_Hololens2_Unity/blob/main/images/ALEJADO.png" width="800" height="500">
 </p>
 
